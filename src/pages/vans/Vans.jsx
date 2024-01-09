@@ -14,8 +14,8 @@ export default function Vans() {
   // console.log(typeFilter);
 
   async function loadVans() {
+    setLoading(true);
     try {
-      setLoading(true);
       const data = await getVans();
       setVans(data);
     } catch (err) {

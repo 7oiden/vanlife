@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useParams, Link, NavLink, Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { getHostedVans } from "../../../api";
 
 export default function HostedVansDetail() {
   const params = useParams();
@@ -14,11 +14,11 @@ export default function HostedVansDetail() {
     color: "#161616",
   };
 
-  async function getVan() {
+  async function loadHostedVan() {
+    setLoading(true);
     try {
-      setLoading(true);
-      const response = await axios.get(`/api/host/vans/${params.id}`);
-      setCurrentVan(response.data.vans);
+      const data = await getHostedVans(params.id);
+      setCurrentVan(data);
     } catch (err) {
       console.error(err);
       setError(err);
@@ -28,7 +28,7 @@ export default function HostedVansDetail() {
   }
 
   useEffect(() => {
-    getVan();
+    loadHostedVan();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

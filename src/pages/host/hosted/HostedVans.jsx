@@ -1,18 +1,18 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getHostedVans } from "../../../api";
 
 export default function HostedVans() {
   const [vans, setVans] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  async function getVans() {
+  async function loadVans() {
+    setLoading(true);
     try {
-      setLoading(true);
-      const response = await axios.get("/api/host/vans");
-      setVans(response.data.vans);
-      console.log(response);
+      const data = await getHostedVans();
+      setVans(data);
+      console.log(data);
     } catch (err) {
       // console.error(err);
       setError(err);
@@ -22,33 +22,35 @@ export default function HostedVans() {
   }
 
   useEffect(() => {
-    getVans();
+    loadVans();
   }, []);
 
-   if (loading)
-     return (
-       <span aria-live="polite" className="loader">
-         Loading...
-       </span>
-     );
+  if (loading)
+    return (
+      <span aria-live="polite" className="loader">
+        Loading...
+      </span>
+    );
 
-   if (error) {
-     return (
-       <span aria-live="assertive">There was an error: {error.message}</span>
-     );
-   }
+  if (error) {
+    return (
+      <span aria-live="assertive">There was an error: {error.message}</span>
+    );
+  }
 
-  const hostVansEls = vans.map((van) => (
-    <Link to={van.id} key={van.id} className="host-van-link-wrapper">
-      <div className="host-van-single" key={van.id}>
-        <img src={van.imageUrl} alt={`Photo of ${van.name}`} />
-        <div className="host-van-info">
-          <h3>{van.name}</h3>
-          <p>${van.price}/day</p>
+  const hostVansEls =
+    vans &&
+    vans.map((van) => (
+      <Link to={van.id} key={van.id} className="host-van-link-wrapper">
+        <div className="host-van-single" key={van.id}>
+          <img src={van.imageUrl} alt={`Photo of ${van.name}`} />
+          <div className="host-van-info">
+            <h3>{van.name}</h3>
+            <p>${van.price}/day</p>
+          </div>
         </div>
-      </div>
-    </Link>
-  ));
+      </Link>
+    ));
 
   return (
     <section>

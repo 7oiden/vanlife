@@ -1,14 +1,15 @@
 import axios from "axios";
 
-export async function getVans() {
-  const response = await axios.get("/api/vans");
-  // if (response.status !== 200) {
-  //   throw {
-  //     message: "Failed to fetch vans",
-  //     statusText: response.statusText,
-  //     status: response.status,
-  //   };
-  // }
+export async function getVans(id) {
+  const url = id ? `/api/vans/${id}` : "/api/vans";
+  const response = await axios.get(url);
+  return response.data.vans;
+}
+
+export async function getHostedVans(id) {
+  const url = id ? `/api/host/vans/${id}` : "/api/host/vans";
+  const response = await axios.get(url);
+  console.log(response);
   return response.data.vans;
 }
 

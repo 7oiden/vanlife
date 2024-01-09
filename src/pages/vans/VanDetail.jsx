@@ -1,7 +1,6 @@
-import axios from "axios";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-// import { GetVans } from "../../api";
+import { getVans } from "../../api";
 
 export default function VanDetail() {
   const params = useParams();
@@ -18,11 +17,11 @@ export default function VanDetail() {
 
   const typeOfVan = location.state?.type || "all";
 
-  async function getVan() {
+  async function loadVan() {
+    setLoading(true);
     try {
-      setLoading(true);
-      const response = await axios.get(`/api/vans/${params.id}`);
-      setVan(response.data.vans);
+      const data = await getVans(params.id);
+      setVan(data);
     } catch (err) {
       console.error(err);
       setError(err);
@@ -32,7 +31,7 @@ export default function VanDetail() {
   }
 
   useEffect(() => {
-    getVan();
+    loadVan();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id]);
 

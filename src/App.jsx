@@ -15,6 +15,8 @@ import HostedVanInfo from "./pages/host/hosted/HostedVanInfo";
 import HostedVanPricing from "./pages/host/hosted/HostedVanPricing";
 import HostedVanPhotos from "./pages/host/hosted/HostedVanPhotos";
 import NotFound from "./pages/NotFound";
+import AuthRequired from "./components/AuthRequired";
+import Login from "./pages/Login";
 import "./server";
 
 function App() {
@@ -26,17 +28,22 @@ function App() {
           <Route path="about" element={<About />} />
           <Route path="vans" element={<Vans />} />
           <Route path="vans/:id" element={<VanDetail />} />
-          <Route path="host" element={<HostLayout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="income" element={<Income />} />
-            <Route path="vans" element={<HostedVans />} />
-            <Route path="vans/:id" element={<HostedVanDetail />}>
-              <Route index element={<HostedVanInfo />} />
-              <Route path="pricing" element={<HostedVanPricing />} />
-              <Route path="photos" element={<HostedVanPhotos />} />
+          <Route path="login" element={<Login />} />
+
+          <Route element={<AuthRequired />}>
+            <Route path="host" element={<HostLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="income" element={<Income />} />
+              <Route path="vans" element={<HostedVans />} />
+              <Route path="vans/:id" element={<HostedVanDetail />}>
+                <Route index element={<HostedVanInfo />} />
+                <Route path="pricing" element={<HostedVanPricing />} />
+                <Route path="photos" element={<HostedVanPhotos />} />
+              </Route>
+              <Route path="reviews" element={<Reviews />} />
             </Route>
-            <Route path="reviews" element={<Reviews />} />
           </Route>
+
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

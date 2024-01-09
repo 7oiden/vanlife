@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { GetVans } from "../../api";
+import { getVans } from "../../api";
 // import filter from "lodash/filter";
 
 export default function Vans() {
@@ -16,7 +16,7 @@ export default function Vans() {
   async function loadVans() {
     try {
       setLoading(true);
-      const data = await GetVans();
+      const data = await getVans();
       setVans(data);
     } catch (err) {
       console.error(err);

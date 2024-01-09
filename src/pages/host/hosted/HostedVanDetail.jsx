@@ -1,11 +1,12 @@
+import axios from "axios";
 import { useParams, Link, NavLink, Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from "axios";
 
 export default function HostedVansDetail() {
   const params = useParams();
   const [currentVan, setCurrentVan] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const activeStyles = {
     fontWeight: "bold",
@@ -15,10 +16,12 @@ export default function HostedVansDetail() {
 
   async function getVan() {
     try {
+      setLoading(true);
       const response = await axios.get(`/api/host/vans/${params.id}`);
       setCurrentVan(response.data.vans);
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
+      setError(err);
     } finally {
       setLoading(false);
     }
@@ -29,7 +32,18 @@ export default function HostedVansDetail() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading) return <span className="loader">Loading...</span>;
+  if (loading)
+    return (
+      <span aria-live="polite" className="loader">
+        Loading...
+      </span>
+    );
+
+  if (error) {
+    return (
+      <span aria-live="assertive">There was an error: {error.message}</span>
+    );
+  }
 
   return (
     <section>

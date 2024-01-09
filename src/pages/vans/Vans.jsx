@@ -1,33 +1,47 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { GetVans } from "../../api";
 // import filter from "lodash/filter";
 
 export default function Vans() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [vans, setVans] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const typeFilter = searchParams.get("type");
 
   // console.log(typeFilter);
 
-  async function getVans() {
+  async function loadVans() {
     try {
-      const response = await axios.get("/api/vans");
-      setVans(response.data.vans);
-    } catch (error) {
-      console.error(error);
+      setLoading(true);
+      const data = await GetVans();
+      setVans(data);
+    } catch (err) {
+      console.error(err);
+      setError(err);
     } finally {
       setLoading(false);
     }
   }
 
   useEffect(() => {
-    getVans();
+    loadVans();
   }, []);
 
-  if (loading) return <span className="loader">Loading...</span>;
+  if (loading)
+    return (
+      <span aria-live="polite" className="loader">
+        Loading...
+      </span>
+    );
+
+  if (error) {
+    return (
+      <span aria-live="assertive">There was an error: {error.message}</span>
+    );
+  }
 
   //solution with lodash:
   // const displayedVans = typeFilter ? filter(vans, { type: typeFilter }) : vans;
@@ -40,7 +54,11 @@ export default function Vans() {
     <div key={van.id} className="van-tile">
       <Link
         to={van.id}
-        state={{ search: `?${searchParams.toString()}`, type: typeFilter, test: "test" }}
+        state={{
+          search: `?${searchParams.toString()}`,
+          type: typeFilter,
+          test: "test",
+        }}
         className="van-link"
         aria-label={`View details for ${van.name}, 
                              priced at $${van.price} per day`}

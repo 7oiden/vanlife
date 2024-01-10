@@ -9,21 +9,23 @@ export default function Login() {
   });
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState(null);
-  const location = useLocation();
 
+  const location = useLocation();
   const navigate = useNavigate();
+  //set the default value of fromLocation to "/host", and redirects to the previous page if there is a state
+  const fromLocation = location.state?.from || "/host";
 
   function handleSubmit(e) {
     e.preventDefault();
     setStatus("submitting");
-    console.log(loginFormData);
+    // console.log(loginFormData);
     loginUser(loginFormData)
       .then((data) => {
         console.log(data);
         setError(null);
         //replace: true is used to replace the current entry in the history stack
         localStorage.setItem("logged-in", true);
-        navigate("/host", { replace: true });
+        navigate(fromLocation, { replace: true });
       })
       .catch((error) => {
         setError(error);

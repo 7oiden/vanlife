@@ -6,6 +6,13 @@ function fakeLogOut() {
 }
 
 export default function Header() {
+
+  const activeStyles = {
+    fontWeight: "bold",
+    textDecoration: "underline",
+    color: "#161616",
+  };
+
   return (
     <header>
       <Link className="site-logo" to="/">
@@ -14,19 +21,19 @@ export default function Header() {
       <nav>
         <NavLink
           to="/host"
-          className={({ isActive }) => (isActive ? "active-link" : null)}
+          style={({ isActive }) => (isActive ? activeStyles : null)}
         >
           Host
         </NavLink>
         <NavLink
           to="/about"
-          className={({ isActive }) => (isActive ? "active-link" : null)}
+          style={({ isActive }) => (isActive ? activeStyles : null)}
         >
           About
         </NavLink>
         <NavLink
           to="/vans"
-          className={({ isActive }) => (isActive ? "active-link" : null)}
+          style={({ isActive }) => (isActive ? activeStyles : null)}
         >
           Vans
         </NavLink>

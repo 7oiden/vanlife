@@ -11,8 +11,6 @@ export default function Vans() {
 
   const typeFilter = searchParams.get("type");
 
-  // console.log(typeFilter);
-
   async function loadVans() {
     setLoading(true);
     try {

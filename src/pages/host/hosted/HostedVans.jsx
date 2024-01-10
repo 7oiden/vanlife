@@ -12,9 +12,9 @@ export default function HostedVans() {
     try {
       const data = await getHostedVans();
       setVans(data);
-      console.log(data);
+      // console.log(data);
     } catch (err) {
-      // console.error(err);
+      console.error(err);
       setError(err);
     } finally {
       setLoading(false);

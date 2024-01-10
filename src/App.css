@@ -58,8 +58,8 @@ header a:hover {
 }
 
 header .login-icon {
-    height: 18px;
-    width: 18px;
+    height: 1.5rem;
+    width: 1.5rem;
 }
 
 header .login-link {
@@ -739,13 +739,6 @@ img.graph {
 .host-reviews .review-star {
     color: #ff8c38;
     margin-right: 5px;
-}
-
-
-.active-link {
-  color: #161616;
-  font-weight: 800;
-  text-decoration: underline;
 }
 
 .loader {
